@@ -1,0 +1,16 @@
+{
+  "name": "reactclient",
+  "version": "1.0.0",
+  "description": "Simple React Socket io Client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.10.2",
+    "path": "^0.12.7",
+    "socketio": "^1.0.0"
+  }
+}
