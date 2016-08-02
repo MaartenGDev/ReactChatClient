@@ -9,7 +9,6 @@ socket.on('connection', function(socket) {
         console.log('connected');
         socket.join(data.token);
     });
-
 });
 
 var Message = React.createClass({
@@ -24,32 +23,62 @@ var Message = React.createClass({
 
 var CommentBox = React.createClass({
     getInitialState: function getInitialState() {
-        return { messages: [] };
+        return {
+          messages: {
+            currentChannel: "global",
+            channels: {
+              global: []
+            }
+          }
+        };
+
     },
     componentDidMount: function componentDidMount() {
-
-        console.log(this.props.channel);
         socket.emit('chat connect', {
             token: 'randomOtherId'
         });
-
         socket.on('chat message', this._addMessage);
-
     },
-    _filterMessages: function filterMessages(messages) {
-        messages.filter(function(message) {
-            return this.props.channel === message.channel;
-        });
+    _setChannel(channel){
+      var currentState = this.state;
+
+      currentState.messages.currentChannel = channel;
+
+      this.setState(currentState);
     },
     _addMessage: function addMessage(message) {
-        var comments = this.state.messages;
-        comments.push(message);
-        console.log(this.state);
-        this.setState({ messages: comments });
+        var data = this.state;
+        var channel = message.channel;
+
+        if(channel == ''){
+          channel = 'global';
+        }
+
+        data = this._addMessageToChannel(data,channel,message);
+
+        this.setState(data);
+
+
+    },
+    _addMessageToChannel: function addMessageToChannel(data,channel,message){
+      if(!data.messages.channels.hasOwnProperty(channel)){
+        data.messages.channels[channel] = [];
+      }
+
+      data.messages.channels[channel].push(message);
+      return data;
     },
     render: function() {
+      var currentChannel = this.state.messages.currentChannel;
+      var channels = this.state.messages.channels;
       var counter = 0;
-        var messageNodes = this.state.messages.map(function(message) {
+        var messages = [];
+
+        if(channels.hasOwnProperty(currentChannel)){
+          messages = channels[currentChannel];
+        }
+
+        var messageNodes = messages.map(function(message) {
           counter++;
             return (
                     <Message user = { message.user } key= { counter } message = { message.message }> { message.message }
@@ -57,14 +86,18 @@ var CommentBox = React.createClass({
                 );
         });
 
-        return ( <div className = "commentBox" >
-            <h1> Comments </h1>
+        return (
+            <div className = "commentBox" >
+                <button onClick={this._setChannel.bind(this,'global')}>Global</button>
+                <button onClick={this._setChannel.bind(this,'Guild')}>Guild</button>
+                <button onClick={this._setChannel.bind(this,'Party')}>Party</button>
+                <h1> Comments </h1>
                 {messageNodes}
             </div>
         );
     }
 });
 
-ReactDOM.render( <CommentBox channel = "all" /> ,
+ReactDOM.render( <CommentBox channel = "Party" /> ,
     document.getElementById('content')
 );
