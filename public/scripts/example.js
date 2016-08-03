@@ -1,16 +1,5 @@
 var socket = io('http://localhost:3000');
 
-socket.on('connection', function(socket) {
-    socket.on('chat message', function(data) {
-        console.log(data);
-    });
-
-    socket.on('chat connect', function(data) {
-        console.log('connected');
-        socket.join(data.token);
-    });
-});
-
 var Message = React.createClass({
     render: function(){
       return (
@@ -20,8 +9,46 @@ var Message = React.createClass({
       )
     }
 });
+var Channel = React.createClass({
+    render: function(){
+      return (
+          <li>
+            <div className="channel">
+              <p><b>{ this.props.channelName}:</b><i>{this.props.unread}</i></p>
+            </div>
+          </li>
+      )
+    }
+});
 
-var CommentBox = React.createClass({
+var ChannelList = React.createClass({
+  getInitialState: function getInitialState() {
+      return {
+        channels: []
+      };
+
+  },
+  componentDidMount: function componentDidMount() {
+
+  },
+  render: function(){
+    var allChannels = Object.keys(this.props.channels);
+    var counter = 0;
+    var channels = allChannels.map((channel) => {
+        counter++;
+        return (
+          <Channel channelName={ channel } key = {counter} unread="3"></Channel>
+        )
+    });
+    return (
+      <ul>
+          {channels}
+      </ul>
+    );
+  }
+});
+
+var ReactApp = React.createClass({
     getInitialState: function getInitialState() {
         return {
           messages: {
@@ -71,6 +98,7 @@ var CommentBox = React.createClass({
     render: function() {
       var currentChannel = this.state.messages.currentChannel;
       var channels = this.state.messages.channels;
+      console.log(channels);
       var counter = 0;
         var messages = [];
 
@@ -88,9 +116,7 @@ var CommentBox = React.createClass({
 
         return (
             <div className = "commentBox" >
-                <button onClick={this._setChannel.bind(this,'global')}>Global</button>
-                <button onClick={this._setChannel.bind(this,'Guild')}>Guild</button>
-                <button onClick={this._setChannel.bind(this,'Party')}>Party</button>
+                <ChannelList channels= {this.state.messages.channels} />
                 <h1> Comments </h1>
                 {messageNodes}
             </div>
@@ -98,6 +124,6 @@ var CommentBox = React.createClass({
     }
 });
 
-ReactDOM.render( <CommentBox channel = "Party" /> ,
+ReactDOM.render( <ReactApp channel = "Party" /> ,
     document.getElementById('content')
 );
