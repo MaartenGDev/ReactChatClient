@@ -1,0 +1,6 @@
+$bottom-shadow: rgba(0, 0, 0, .23);
+$bottom-left: rgba(0, 0, 0, .16);
+
+@mixin card($margin: 3px) {
+  box-shadow: 0 $margin 12px $bottom-shadow, 0 3px 12px $bottom-left;
+}

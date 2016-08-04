@@ -1,0 +1,15 @@
+$margin-small: 6px;
+$margin-medium: 12px;
+$margin-large: 24px;
+
+.margin-left-small {
+  margin-left: $margin-small;
+}
+
+.margin-left-medium {
+  margin-left: $margin-medium;
+}
+
+.margin-left-large {
+  margin-left: $margin-large;
+}

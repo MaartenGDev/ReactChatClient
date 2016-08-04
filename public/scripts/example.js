@@ -41,13 +41,33 @@ var ChannelList = React.createClass({
         )
     });
     return (
-      <ul>
-          {channels}
-      </ul>
+      <div className ="sidebar">
+          <ul>
+            {channels}
+          </ul>
+      </div>
     );
   }
 });
+var MessageList = React.createClass({
+  render: function(){
+    var counter = 0;
+    var messageNodes = this.props.messages.map(function(message) {
 
+      counter++;
+        return (
+                <Message user = { message.user } key= { counter } message = { message.message }> { message.message }
+                </Message>
+            );
+
+    });
+    return (
+      <div className="chatWindow">
+          {messageNodes}
+      </div>
+    )
+  }
+});
 var ReactApp = React.createClass({
     getInitialState: function getInitialState() {
         return {
@@ -79,36 +99,36 @@ var ReactApp = React.createClass({
     },
     _addMessage: function addMessage(message) {
         var data = this.state;
-        var channel = message.channel;
+        var channelKey = message.channel;
 
-        if(channel == 'From' || channel == 'To'){
-          channel = message.user;
+        if(channelKey == 'From' || channelKey == 'To'){
+          channelKey = message.user;
         }
-        if(channel == ''){
-          channel = 'global';
+        if(channelKey == ''){
+          channelKey = 'global';
         }
 
-        data = this._addMessageToChannel(data,channel,message);
+        data = this._addMessageToChannel(data,channelKey,message);
 
         this.setState(data);
 
 
     },
-    _addMessageToChannel: function addMessageToChannel(data,channel,message){
-      if(!data.messages.channels.hasOwnProperty(channel)){
-        data.messages.channels[channel] = {
-          name: channel,
+    _addMessageToChannel: function addMessageToChannel(data,channelKey,message){
+      if(!data.messages.channels.hasOwnProperty(channelKey)){
+        data.messages.channels[channelKey] = {
+          name: channelKey,
           messages: [],
           unread: 0
         } ;
       }
 
-      data.messages.channels[channel].messages.push(message);
+      data.messages.channels[channelKey].messages.push(message);
 
-      var unreadMessages = data.messages.channels[channel].unread;
+      var unreadMessages = data.messages.channels[channelKey].unread;
 
-      if(data.messages.currentChannel != channel){
-        data.messages.channels[channel].unread = unreadMessages + 1;
+      if(data.messages.currentChannel != channelKey){
+        data.messages.channels[channelKey].unread = unreadMessages + 1;
       }
 
       return data;
@@ -116,26 +136,16 @@ var ReactApp = React.createClass({
     render: function() {
         var currentChannel = this.state.messages.currentChannel;
         var channels = this.state.messages.channels;
-        var counter = 0;
         var messages = [];
 
         if(channels.hasOwnProperty(currentChannel)){
           messages = channels[currentChannel].messages;
         }
 
-        var messageNodes = messages.map(function(message) {
-          counter++;
-            return (
-                    <Message user = { message.user } key= { counter } message = { message.message }> { message.message }
-                    </Message>
-                );
-        });
-
         return (
-            <div className = "commentBox" >
+            <div className = "ReactApp" >
                 <ChannelList currentChannel={ currentChannel } onChannelChange = { this._setChannel } channels= {this.state.messages.channels} />
-                <h1> Comments </h1>
-                {messageNodes}
+                <MessageList messages = {messages} />
             </div>
         );
     }

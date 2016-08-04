@@ -1,0 +1,19 @@
+.float-right {
+  float: right;
+}
+
+.float-left {
+  float: left;
+}
+
+@media screen and (max-width: $medium-breakpoint) {
+  .float {
+    &-left {
+      float: none;
+    }
+
+    &-right {
+      float: none;
+    }
+  }
+}

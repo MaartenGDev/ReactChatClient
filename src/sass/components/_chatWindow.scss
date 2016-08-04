@@ -1,0 +1,8 @@
+.chatWindow{
+  display: inline-block;
+  width: calc(100% - 200px);
+  background-color: $indigo;
+  float: left;
+  max-height: 100vh;
+  overflow-y: scroll;
+}

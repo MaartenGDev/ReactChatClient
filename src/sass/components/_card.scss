@@ -1,0 +1,34 @@
+.cards {
+  @include card;
+  background-color: $blue;
+  left: 0;
+  margin: 0 auto;
+
+  right: 0;
+  text-align: left;
+  width: 960px;
+  z-index: 3;
+
+  .tab {
+    padding: 10px 20px;
+    text-align: center;
+  }
+
+  .tab-details {
+    background-color: $indigo;
+    padding: 10px 20px;
+  }
+
+  .active-tab {
+    background-color: $indigo;
+    box-shadow: 0 0 20px $bottom-left;
+  }
+}
+
+@media screen and (max-width: $medium-breakpoint) {
+  .cards {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: calc(100% - 20px);
+  }
+}
