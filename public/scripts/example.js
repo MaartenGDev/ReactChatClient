@@ -9,11 +9,12 @@ var Message = React.createClass({
       )
     }
 });
+
 var Channel = React.createClass({
     render: function(){
       return (
           <li>
-            <div className="channel">
+            <div onClick={this.props.onClick} className="channel">
               <p><b>{ this.props.channelName}:</b><i>{this.props.unread}</i></p>
             </div>
           </li>
@@ -22,22 +23,18 @@ var Channel = React.createClass({
 });
 
 var ChannelList = React.createClass({
-  getInitialState: function getInitialState() {
-      return {
-        channels: []
-      };
-
-  },
-  componentDidMount: function componentDidMount() {
-
+  changeChannel: function(channel){
+    console.log("Change to " + channel);
   },
   render: function(){
     var allChannels = Object.keys(this.props.channels);
     var counter = 0;
     var channels = allChannels.map((channel) => {
+    var boundClick = this.changeChannel.bind(this, channel);
+
         counter++;
         return (
-          <Channel channelName={ channel } key = {counter} unread="3"></Channel>
+          <Channel onClick = {boundClick} channelName={ channel } key = {counter} unread="3"></Channel>
         )
     });
     return (
@@ -96,10 +93,9 @@ var ReactApp = React.createClass({
       return data;
     },
     render: function() {
-      var currentChannel = this.state.messages.currentChannel;
-      var channels = this.state.messages.channels;
-      console.log(channels);
-      var counter = 0;
+        var currentChannel = this.state.messages.currentChannel;
+        var channels = this.state.messages.channels;
+        var counter = 0;
         var messages = [];
 
         if(channels.hasOwnProperty(currentChannel)){
