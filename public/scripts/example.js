@@ -25,11 +25,13 @@ var Channel = React.createClass({
 var ChannelList = React.createClass({
   changeChannel: function(channel){
     console.log("Change to " + channel);
+    this.props.onChannelChange(channel);
   },
   render: function(){
     var allChannels = Object.keys(this.props.channels);
     var counter = 0;
     var channels = allChannels.map((channel) => {
+
     var boundClick = this.changeChannel.bind(this, channel);
 
         counter++;
@@ -112,7 +114,7 @@ var ReactApp = React.createClass({
 
         return (
             <div className = "commentBox" >
-                <ChannelList channels= {this.state.messages.channels} />
+                <ChannelList onChannelChange = { this._setChannel } channels= {this.state.messages.channels} />
                 <h1> Comments </h1>
                 {messageNodes}
             </div>
