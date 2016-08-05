@@ -2,11 +2,20 @@ var socket = io('http://localhost:3000');
 
 var Message = React.createClass({
 	render: function() {
+		var messageDate = this.props.date;
+		var date = messageDate.getHours() + ':' + messageDate.getMinutes();
+
 		return(
 			<div className="message">
-                <p><b>{ this.props.user}:</b><i>{this.props.message}</i></p>
-          </div>
+            <p><b>{ this.props.user}</b> <span className="message-date">{date}</span></p>
+						<p className = "message-data">{this.props.message}</p>
+      </div>
 		)
+	}
+});
+var UnreadChip = React.createClass({
+	render: function(){
+		return this.props.unread > 0 ? <span className="unread-chip">{this.props.unread}</span> : null;
 	}
 });
 
@@ -15,7 +24,7 @@ var ChannelTitle = React.createClass({
 		if(this.props.title === null) return null;
 
 		return(
-			<h1>{this.props.title}</h1>
+			<p className="group-title">{this.props.title}</p>
 		)
 	}
 });
@@ -23,11 +32,11 @@ var ChannelTitle = React.createClass({
 var Channel = React.createClass({
 	render: function() {
 		return(
-			<li>
-            <div onClick={this.props.onClick} className="channel">
-              <p><b>{ this.props.channelName}:</b><i>{this.props.unread}</i></p>
-            </div>
-          </li>
+			<li className="channel-name">
+          <div onClick={this.props.onClick} className="channel">
+            <p>{ this.props.channelName} <UnreadChip unread= {this.props.unread }/></p>
+          </div>
+      </li>
 		)
 	}
 });
@@ -69,7 +78,6 @@ var ChannelList = React.createClass({
       if(!messages.hasOwnProperty(channelType)){
         messages[channelType] = [];
       }
-      console.log(channelTitle);
       messages[channelType].push(this._addChannel(channelTitle, channelCounter, boundClick, channel));
 		});
     Object.keys(messages).forEach((channelKey) => {
@@ -77,10 +85,9 @@ var ChannelList = React.createClass({
           allMessages.push(message);
       });
     });
-    console.log(allMessages);
 		return(
 			<div className ="sidebar">
-          <ul>
+          <ul className="channel-list">
             {allMessages}
           </ul>
       </div>
@@ -94,13 +101,13 @@ var MessageList = React.createClass({
 
 			counter++;
 			return(
-				<Message user = { message.user } key= { counter } message = { message.message }> { message.message }
+				<Message date = { message.date } user = { message.user } key= { counter } message = { message.message }> { message.message }
                 </Message>
 			);
 
 		});
 		return(
-			<div className="chatWindow">
+			<div className="chat-window">
           {messageNodes}
       </div>
 		)
@@ -113,7 +120,7 @@ var ReactApp = React.createClass({
 				currentChannel: "global",
 				channels: {
 					Global: {
-						type: 'channel',
+						type: 'channels',
 						name: 'Global',
 						messages: [],
 						unread: 0,
@@ -140,9 +147,8 @@ var ReactApp = React.createClass({
 		var data = this.state;
 		var channelKey = message.channel;
 
-		if(channelKey == 'From' || channelKey == 'To') {
-			channelKey = message.user;
-		}
+		message.date = new Date();
+
 		if(channelKey == '') {
 			channelKey = 'global';
 		}
@@ -150,15 +156,18 @@ var ReactApp = React.createClass({
 		data = this._addMessageToChannel(data, channelKey, message);
 
 		this.setState(data);
-
-
 	},
 	_addMessageToChannel: function addMessageToChannel(data, channelKey, message) {
 
-		var channelType = 'channel';
+		var channelType = 'channels';
+		if(message.channel === 'To' || message.channel === 'From'){
+				channelKey = message.user;
+				channelType = 'users';
+		}
+
 		if(message.team !== '') {
 			channelKey = message.team;
-			channelType = 'team';
+			channelType = 'teams';
 		}
 
 		if(!data.messages.channels.hasOwnProperty(channelKey)) {
@@ -169,8 +178,6 @@ var ReactApp = React.createClass({
 				unread: 0
 			};
 		}
-
-
 
 		data.messages.channels[channelKey].messages.push(message);
 
@@ -225,16 +232,16 @@ socket.emit('chat message', {
 	rank: 'VIP+'
 });
 socket.emit('chat message', {
-	message: 'Oi Holy_Sheep',
-	channel: '',
-	user: 'Randy123',
-	team: 'teamABC',
+	message: 'First Sample Message',
+	channel: 'To',
+	user: 'TestUser',
+	team: '',
 	rank: ''
 });
 socket.emit('chat message', {
-	message: 'Oi Holy_Sheep',
-	channel: 'Guild',
-	user: 'Craftacar',
-	team: 'teamABC',
+	message: 'Test Hello World',
+	channel: 'From',
+	user: 'TestUser',
+	team: '',
 	rank: 'VIP+'
 });

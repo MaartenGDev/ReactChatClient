@@ -1,6 +1,21 @@
 .sidebar {
-  width: 200px;
+  @include card;
+  background-color: $white;
   display: inline-block;
-  background-color: $blue-gray;
   float: left;
+  height: 100vh;
+  width: 200px;
+}
+
+.group-title {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.channel-list {
+  list-style-type: none;
+}
+
+.unread-chip {
+  @include chip($blue);
 }

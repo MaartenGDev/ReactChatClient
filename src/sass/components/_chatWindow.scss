@@ -1,8 +1,20 @@
-.chatWindow{
+.chat-window {
   display: inline-block;
-  width: calc(100% - 200px);
-  background-color: $indigo;
   float: left;
   max-height: 100vh;
   overflow-y: scroll;
+  width: calc(100% - 200px);
+
+  .message {
+    margin-left: 20px;
+  }
+
+  .message-data {
+    color: $dark-gray;
+  }
+
+  .message-date {
+    color: $grey;
+    margin-left: 5px;
+  }
 }
