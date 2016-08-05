@@ -209,39 +209,3 @@ var ReactApp = React.createClass({
 ReactDOM.render(<ReactApp channel = "Party" />,
 	document.getElementById('content')
 );
-
-socket.emit('chat message', {
-	message: 'Hello React',
-	channel: 'Party',
-	user: 'Holy_sheep',
-	team: '',
-	rank: 'MVP+'
-});
-socket.emit('chat message', {
-	message: 'Hello Guild Chat',
-	channel: 'Guild',
-	user: 'Holy_Sheep',
-	team: '',
-	rank: 'VIP+'
-});
-socket.emit('chat message', {
-	message: 'Oi Holy_Sheep',
-	channel: 'Guild',
-	user: 'Craftacar',
-	team: '',
-	rank: 'VIP+'
-});
-socket.emit('chat message', {
-	message: 'First Sample Message',
-	channel: 'To',
-	user: 'TestUser',
-	team: '',
-	rank: ''
-});
-socket.emit('chat message', {
-	message: 'Test Hello World',
-	channel: 'From',
-	user: 'TestUser',
-	team: '',
-	rank: 'VIP+'
-});
