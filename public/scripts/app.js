@@ -119,12 +119,6 @@ var ReactApp = React.createClass({
 			messages: {
 				currentChannel: "global",
 				channels: {
-					Global: {
-						type: 'channels',
-						name: 'Global',
-						messages: [],
-						unread: 0,
-					}
 				}
 			}
 		};
@@ -148,7 +142,6 @@ var ReactApp = React.createClass({
 		var channelKey = message.channel;
 
 		message.date = new Date();
-
 		if(channelKey == '') {
 			channelKey = 'global';
 		}
@@ -158,16 +151,15 @@ var ReactApp = React.createClass({
 		this.setState(data);
 	},
 	_addMessageToChannel: function addMessageToChannel(data, channelKey, message) {
-
 		var channelType = 'channels';
 		if(message.channel === 'To' || message.channel === 'From'){
 				channelKey = message.user;
 				channelType = 'users';
 		}
-
-		if(message.team !== '') {
-			channelKey = message.team;
+		if(typeof message.group !== 'undefined' && message.group !== '') {
+			channelKey = message.group.replace('[','').replace(']','').toLowerCase();
 			channelType = 'teams';
+
 		}
 
 		if(!data.messages.channels.hasOwnProperty(channelKey)) {
