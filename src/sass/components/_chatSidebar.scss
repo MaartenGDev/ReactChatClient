@@ -1,6 +1,7 @@
 .sidebar {
   @include card;
-  background-color: $white;
+  background-color: $dark-blue;
+  color: $white;
   display: inline-block;
   float: left;
   height: 100vh;
@@ -8,10 +9,11 @@
 }
 
 .channel {
-  text-transform: capitalize;
+  text-transform: uppercase;
 }
 
 .group-title {
+  color: $material-blue;
   font-weight: bold;
   text-transform: capitalize;
 }
@@ -21,5 +23,5 @@
 }
 
 .unread-chip {
-  @include chip($blue);
+  @include chip($material-red);
 }
