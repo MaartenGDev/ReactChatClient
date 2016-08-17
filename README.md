@@ -1,5 +1,5 @@
 # ReactChatClient
-![Interface Preview](https://github.com/MaartenGDev/ReactChatClient/blob/master/public/images/interface.PNG)
+![Interface Preview](https://github.com/MaartenGDev/ReactChatClient/blob/master/public/images/interface_dark.PNG)
 
 ## Install
 - git clone git@github.com:MaartenGDev/ReactChatClient.git
