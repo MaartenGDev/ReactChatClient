@@ -4,13 +4,36 @@
   max-height: 100vh;
   overflow-y: scroll;
   width: calc(100% - 200px);
+  padding-top: 10px;
 
   .message {
     margin-left: 20px;
   }
 
-  .message-data {
-    color: $dark-gray;
+  .message-details {
+    display: inline-block;
+    margin-left: 10px;
+    width: calc(100% - 50px);
+
+    .message-user {
+      font-size: 15px;
+      margin-bottom: 5px;
+      margin-top: 0;
+    }
+
+    .message-data {
+      color: $dark-gray;
+      margin-top: 0;
+    }
+
+  }
+
+
+
+  .message-user-image{
+      border-radius: 100%;
+      height: 40px;
+      width: 40px;
   }
 
   .message-date {

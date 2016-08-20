@@ -3,12 +3,17 @@ var socket = io('http://localhost:3000');
 var Message = React.createClass({
 	render: function() {
 		var messageDate = this.props.date;
-		var date = messageDate.getHours() + ':' + messageDate.getMinutes();
+		var minutes =  messageDate.getMinutes() > 9 ?  messageDate.getMinutes() : "0" +  messageDate.getMinutes();
+
+		var date = messageDate.getHours() + ':' + minutes;
 
 		return(
 			<div className="message">
-            <p><b>{ this.props.user}</b> <span className="message-date">{date}</span></p>
-						<p className = "message-data">{this.props.message}</p>
+						<ProfileImage size="40" user= { this.props.user }></ProfileImage>
+						<div className="message-details">
+            	<p className = "message-user"><b>{ this.props.user}</b> <span className="message-date">{date}</span></p>
+							<p className = "message-data">{this.props.message}</p>
+						</div>
       </div>
 		)
 	}
@@ -25,6 +30,13 @@ var ChannelTitle = React.createClass({
 
 		return(
 			<p className="group-title">{this.props.title}</p>
+		)
+	}
+});
+var ProfileImage = React.createClass({
+	render: function() {
+		return (
+			<img className="message-user-image" src={"https://crafatar.com/avatars/"+ this.props.user + "?size=" + this.props.size } />
 		)
 	}
 });
@@ -101,8 +113,7 @@ var MessageList = React.createClass({
 
 			counter++;
 			return(
-				<Message date = { message.date } user = { message.user } key= { counter } message = { message.message }> { message.message }
-                </Message>
+				<Message date = { message.date } user = { message.user } key= { counter } message = { message.message }> { message.message }</Message>
 			);
 
 		});
