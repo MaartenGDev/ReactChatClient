@@ -8,9 +8,14 @@ var Message = React.createClass({
         var date = messageDate.getHours() + ':' + minutes;
 
         return ( < div className = "message" >
-            < ProfileImage size = "40"
-            user = { this.props.user } > < /ProfileImage> < div className = "message-details" >
-            < p className = "message-user" > < b > { this.props.user } < /b> <span className="message-date">{date}</span > < /p> < p className = "message-data" > { this.props.message } < /p> < /div> < /div>
+            <ProfileImage size = "40"user = { this.props.user } />
+            <div className = "message-details" >
+                <p className = "message-user" > 
+                    <b> { this.props.user } < /b> 
+                    <span className="message-date">{date}</span > 
+                </p> 
+                <p className = "message-data" >{ this.props.message }</p>
+            </div>
         )
     }
 });
@@ -24,12 +29,15 @@ var ChannelTitle = React.createClass({
     render: function() {
         if (this.props.title === null) return null;
 
-        return ( < p className = "group-title" > { this.props.title } < /p>)
+        return ( 
+            <p className = "group-title" > { this.props.title } </p>
+        )
     }
 });
 var ProfileImage = React.createClass({
     render: function() {
-        return ( < img className = "message-user-image"
+        return ( 
+            <img className = "message-user-image" 
             src = { "https://crafatar.com/avatars/" + this.props.user + "?size=" + this.props.size }
             />
         )
@@ -38,12 +46,12 @@ var ProfileImage = React.createClass({
 
 var Channel = React.createClass({
     render: function() {
-        return ( < li className = "channel-name" >
-            < div onClick = { this.props.onClick }
-            className = "channel" >
-            < p > { this.props.channelName } < UnreadChip unread = { this.props.unread }
-            /></p >
-            < /div> < /li>
+        return ( 
+            < li className = "channel-name" >
+                <div onClick = { this.props.onClick } className = "channel">
+                    <p> { this.props.channelName } <UnreadChip unread = { this.props.unread }/></p>
+                </div>
+            </li>
         )
     }
 });
@@ -54,8 +62,9 @@ var ChannelList = React.createClass({
     },
 
     _addChannel(channelTitle, key, boundClick, channel) {
-        return [ < ChannelTitle title = { channelTitle }
-            />, <Channel onClick = {boundClick} channelName={ channel.name } key = {key} unread= { channel.unread } / >
+        return [ 
+            < ChannelTitle title = { channelTitle }/>, 
+            <Channel onClick = {boundClick} channelName={ channel.name } key = {key} unread= { channel.unread } />
         ];
     },
     _getChannelTitle: function(foundTypes, channel) {
@@ -94,8 +103,10 @@ var ChannelList = React.createClass({
                 allMessages.push(message);
             });
         });
-        return ( < div className = "sidebar" >
-            < ul className = "channel-list" > { allMessages } < /ul> < /div>
+        return ( 
+            <div className = "sidebar">
+                <ul className = "channel-list" > { allMessages } < /ul> 
+            </div>
         );
     }
 });
@@ -105,14 +116,16 @@ var MessageList = React.createClass({
         var messageNodes = this.props.messages.map(function(message) {
 
             counter++;
-            return ( < Message date = { message.date }
-                user = { message.user }
-                key = { counter }
-                message = { message.message } > { message.message } < /Message>
+            return ( 
+            < Message date = { message.date } user = { message.user } key = { counter } message = { message.message } >
+                { message.message } 
+            </Message>
             );
 
         });
-        return ( < div className = "chat-window" > { messageNodes } < /div>)
+        return ( 
+            <div className = "chat-window"> { messageNodes } </div>
+        )
     }
 });
 var ReactApp = React.createClass({
@@ -190,12 +203,11 @@ var ReactApp = React.createClass({
         if (channels.hasOwnProperty(currentChannel)) {
             messages = channels[currentChannel].messages;
         }
-        return ( < div className = "ReactApp" >
-            < ChannelList currentChannel = { currentChannel }
-            onChannelChange = { this._setChannel }
-            channels = { channels }
-            /> < MessageList messages = { messages }
-            /> < /div>
+        return ( 
+            < div className = "ReactApp" >
+                < ChannelList currentChannel = { currentChannel } onChannelChange = { this._setChannel } channels = { channels }/> 
+                < MessageList messages = { messages }/> 
+            < /div>
         );
     }
 });
